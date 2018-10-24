@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">HotSwitchLocalizationTest</string>
+  <string name="switch_location_name">SWITCH</string>
+</resources>
