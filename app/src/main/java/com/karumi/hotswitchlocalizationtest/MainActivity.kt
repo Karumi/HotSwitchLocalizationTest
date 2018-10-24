@@ -1,16 +1,16 @@
 package com.karumi.hotswitchlocalizationtest
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import com.akexorcist.localizationactivity.ui.LocalizationActivity
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : LocalizationActivity() {
+class MainActivity : AppCompatActivity(), LocalizationChanger.Listener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    LocalizationChanger.register(this)
     setContentView(R.layout.activity_main)
     setTitle(R.string.app_name)
     button.setOnClickListener {
@@ -21,16 +21,22 @@ class MainActivity : LocalizationActivity() {
     }
   }
 
+  override fun onDestroy() {
+    LocalizationChanger.unregister(this)
+    super.onDestroy()
+  }
+
+  override fun onChange() {
+    this.recreate()
+  }
+
   private fun switchLocale() {
-    val config = resources.configuration
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      val currentLocale = config.locale
-      val nextLocale = when (currentLocale) {
-        Locale.SIMPLIFIED_CHINESE -> Locale.ENGLISH
-        else -> Locale.SIMPLIFIED_CHINESE
-      }
-      setLanguage(nextLocale)
+    val currentLocale = LocalizationChanger.getLocale(this)
+    val nextLocale = when (currentLocale) {
+      Locale.SIMPLIFIED_CHINESE -> Locale.ENGLISH
+      else -> Locale.SIMPLIFIED_CHINESE
     }
+    LocalizationChanger.setLocale(this, nextLocale)
   }
 
   private fun openNextActivity() {
