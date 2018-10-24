@@ -2,7 +2,7 @@
 
 Android app implemented to show how to change the language and country used by our apps in runtime without restarting thea app. This only works for API >= 17. For API < 17 the localization change is not applied.
 
-![screencast](./art/screencast.gif)
+<img src="./art/screencast.gif" width=350 />
 
 License
 -------
